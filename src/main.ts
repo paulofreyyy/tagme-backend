@@ -23,6 +23,13 @@ async function bootstrap() {
         })
     )
 
+    // Habilitar CORS globalmente
+    app.enableCors({
+        origin: '*',
+        methods: 'GET,POST,PUT,PATCH,DELETE',
+        allowedHeaders: 'Content-Type, Authorization',
+    });
+
     await app.listen(3000);
 }
 bootstrap();
