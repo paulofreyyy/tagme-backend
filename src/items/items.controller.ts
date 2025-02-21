@@ -1,7 +1,8 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, Put } from '@nestjs/common';
 import { ItemsService } from './items.service';
 import { CreateItemDto } from './dtos/create-item.dto';
 import { Item } from './schemas/item.schema';
+import { UpdateItemDto } from './dtos/update-item.dto';
 
 @Controller('items')
 export class ItemsController {
@@ -26,14 +27,20 @@ export class ItemsController {
         return this.itemsService.findOne(id);
     }
 
-    @Get()
-    @HttpCode(HttpStatus.NO_CONTENT)
-    async update(@Body() body: CreateItemDto, @Param('id') id: string): Promise<Item> {
+    @Put(':id')
+    @HttpCode(HttpStatus.OK)
+    async update(@Body() body: UpdateItemDto, @Param('id') id: string): Promise<Item> {
         return this.itemsService.update(id, body);
     }
 
-    @Get()
-    @HttpCode(HttpStatus.NO_CONTENT)
+    @Patch(':id')
+    @HttpCode(HttpStatus.OK)
+    async partialUpdate(@Param('id') id: string, @Body() body: UpdateItemDto): Promise<Item> {
+        return this.itemsService.partialUpdate(id, body);
+    }
+
+    @Delete(':id')
+    @HttpCode(HttpStatus.OK)
     async remove(@Param('id') id: string): Promise<void> {
         return this.itemsService.remove(id);
     }
